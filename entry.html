@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>開催日選択</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+        }
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        select {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            appearance: menulist;
+            background-color: #fff;
+        }
+        button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            color: #fff;
+            background-color: #00796b;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #004d40;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>開催日選択</h2>
+        <form id="eventForm">
+            <label for="eventDate">開催日を選択してください</label>
+            <select id="eventDate" name="eventDate" required>
+                <!-- JavaScriptで選択肢を動的に設定 -->
+            </select>
+            <button type="submit">送信</button>
+        </form>
+    </div>
+
+    <script>
+        // iOSデバイス判定
+        const isiOS = /iPhone|iPad|iPod/.test(navigator.userAgent);
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const selectElement = document.getElementById('eventDate');
+            const options = [
+                { value: "", text: "選択してください", disabled: true, selected: true },
+                { value: "2024-01-01", text: "2024年1月1日" },
+                { value: "2024-01-02", text: "2024年1月2日" },
+                { value: "2024-01-03", text: "2024年1月3日" },
+            ];
+
+            // 選択肢を動的に追加
+            options.forEach(optionData => {
+                const option = document.createElement('option');
+                option.value = optionData.value;
+                option.textContent = optionData.text;
+                if (optionData.disabled) option.disabled = true;
+                if (optionData.selected) option.selected = true;
+                selectElement.appendChild(option);
+            });
+
+            // iOS以外の場合はCSSで見た目を調整
+            if (!isiOS) {
+                selectElement.style.appearance = "menulist";
+                selectElement.style.webkitAppearance = "menulist";
+            } else {
+                // iOSではネイティブの動作に任せる
+                selectElement.style.appearance = "auto";
+                selectElement.style.webkitAppearance = "auto";
+            }
+        });
+
+        // フォーム送信イベント
+        document.getElementById('eventForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const selectedDate = document.getElementById('eventDate').value;
+            if (!selectedDate) {
+                alert('開催日を選択してください。');
+            } else {
+                alert(`選択された開催日は: ${selectedDate}`);
+            }
+        });
+    </script>
+</body>
+</html>
